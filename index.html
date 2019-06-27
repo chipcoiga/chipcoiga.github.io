@@ -1,50 +1,59 @@
 <!DOCTYPE HTML>
-<html lang="en">
-<head>
-	<title>TITLE</title>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<html>
+  <head>
+    <title>Redirect example</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta charset="UTF-8">
-	
-	
-	<!-- Font -->
-	
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700%7CPoppins:400,500" rel="stylesheet">
-	
-	
-	<link href="common-css/ionicons.css" rel="stylesheet">
-	
-	
-	<link rel="stylesheet" href="common-css/jquery.classycountdown.css" />
-		
-	<link href="03-comming-soon/css/styles.css" rel="stylesheet">
-	
-	<link href="03-comming-soon/css/responsive.css" rel="stylesheet">
-	
-</head>
-<body>
-	
-	<div class="main-area center-text" style="background-image:url(images/countdown-3-1600x900.jpg);">
-		
-		<div class="display-table">
-			<div class="display-table-cell">
-				
-				<h1 class="title font-white"><b>Comming Soon</b></h1>
-				<p class="desc font-white">Our website is currently undergoing scheduled maintenance.
-					We Should be back shortly. Thank you for your patience.</p>
-				
-				<a class="notify-btn" href="#"><b>NOTIFY US</b></a>
-				
-				<ul class="social-btn font-white">
-					<li><a href="https://www.facebook.com/TroReDaNang/">facebook</a></li>
-					<li><a href="#">twitter</a></li>
-					<li><a href="#">google</a></li>
-					<li><a href="#">instagram</a></li>
-				</ul><!-- social-btn -->
-				
-			</div><!-- display-table -->
-		</div><!-- display-table-cell -->
-	</div><!-- main-area -->
-	
-</body>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function(event) {
+        var links = document.querySelectorAll('a');
+        var baseUri = 'exp://wg-qka.notbrent.app.exp.direct';
+        // Take the uri from the params
+        var qs = decodeURIComponent(document.location.search);
+        if (qs) {
+          baseUri = qs.split('?linkingUri=')[1];
+        }
+        // Update the link urls
+        for (var i = 0; i < links.length; ++i) {
+          links[i].href = links[i].href.replace('exp://REPLACE_ME/', baseUri);
+          console.log(links[i].href);
+        }
+        var redirectInterval = setInterval(function() {
+          var countdown = document.querySelector('.countdown');
+          var t = parseInt(countdown.innerText, 10);
+          t -= 1;
+          countdown.innerText = t;
+          if (t === 0) {
+            clearInterval(redirectInterval);
+            window.location.href = baseUri + 'message=' + encodeURIComponent('Redirected automatically by timer');
+          }
+        }, 1000);
+      });
+    </script>
+  </head>
+
+  <body>
+    <h2>Redirect example</h2>
+    <ul style="margin-left: 0; padding-left: 15px;">
+      <li>
+        <a href="exp://REPLACE_ME/">
+          Go back with no params
+        </a>
+      </li>
+      <li>
+        <a href="exp://REPLACE_ME/message=Hello%20World">
+          Pass back a message of "hello world"
+        </a>
+      </li>
+      <li>
+        <a href="exp://REPLACE_ME/authToken=23xbdbb21b3">
+          Pass back some fake auth token
+        </a>
+      </li>
+    </ul>
+
+    <p>
+      Redirecting automatically back to app in <span class="countdown">5</span> seconds
+    </p>
+  </body>
 </html>
